@@ -2,7 +2,7 @@
   let question = $state("");
   let options = $state<string[]>(["", ""]);
   let createdByUserId = $state<number | null>(null);
-  let validUntil = $state<string>(""); // Optional expiration date
+  let validUntil = $state<string>("");
 
   function addOption() {
     options.push("");
@@ -21,10 +21,9 @@
     }
 
     try {
-      // First create the poll
       const pollPayload = {
         question,
-        publishedAt: null, // Will use current time on backend
+        publishedAt: null,
         validUntil: validUntil ? new Date(validUntil).toISOString() : null,
         createdByUserId
       };
@@ -43,7 +42,6 @@
       const createdPoll = await pollRes.json();
       const pollId = createdPoll.id;
 
-      // Then create each option
       for (let i = 0; i < options.length; i++) {
         const optionPayload = {
           caption: options[i].trim(),
