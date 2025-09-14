@@ -28,7 +28,7 @@
         createdByUserId
       };
 
-      const pollRes = await fetch("http://localhost:8080/api/polls", {
+      const pollRes = await fetch("/api/polls", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(pollPayload)
@@ -48,7 +48,7 @@
           presentationOrder: i
         };
 
-        const optionRes = await fetch(`http://localhost:8080/api/polls/${pollId}/options`, {
+        const optionRes = await fetch(`/api/polls/${pollId}/options`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(optionPayload)
@@ -62,7 +62,6 @@
 
       alert("Poll created successfully!");
       
-      // Reset form
       question = "";
       options = ["", ""];
       createdByUserId = null;

@@ -13,24 +13,22 @@
     optionIds: number[];
   }
 
-  // reactive state with runes
   let polls = $state<Poll[]>([]);
   let options = $state<Record<number, VoteOption[]>>({});
   let userId = $state<number | null>(null);
 
-  // use onMount instead of effect for initial loading
   onMount(() => {
     loadPolls();
   });
 
   async function loadPolls() {
-    const res = await fetch("http://localhost:8080/api/polls");
+    const res = await fetch("/api/polls");
     if (res.ok) {
       const fetchedPolls: Poll[] = await res.json();
       polls = fetchedPolls;
       
       for (const poll of fetchedPolls) {
-        const optRes = await fetch(`http://localhost:8080/api/polls/${poll.id}/options`);
+        const optRes = await fetch(`/api/polls/${poll.id}/options`);
         if (optRes.ok) {
           const opts: VoteOption[] = await optRes.json();
           options[poll.id] = opts;
@@ -45,7 +43,7 @@
       return;
     }
 
-    const res = await fetch(`http://localhost:8080/api/polls/${pollId}/votes`, {
+    const res = await fetch(`/api/polls/${pollId}/votes`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, voteOptionId })
